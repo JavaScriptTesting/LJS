@@ -23,7 +23,7 @@
 
     On Ubuntu this is /usr/share/qt4
      
- 2. Build and install Artemis
+ 2. Build and install Artemis(LJS)
    
    	  make install
 
