@@ -40,7 +40,6 @@ namespace artemis
 		writeListToFile(filename, originalModel);
 	}
 
-	
 
     QString Model::getNextState(QString from, QString event) {
     	QSet<TransitionItem>* set = adjoinSet[from];
@@ -115,50 +114,18 @@ namespace artemis
 				to = temp[1];
 				assert(to.toStdString() != "");
 				TransitionItem transitionItem(from, event, to);
+		    	// std::cout << "T: " + transitionItem.toString().toStdString() << std::endl;
 				transitions.insert(transitionItem);
 				states.insert(to);
 				from = to;
 			}
-			// std::cout << "1111" << std::endl;
-			// for(int j = 0; j < temp.size(); j++)
-			// 	std::cout << temp[j].toStdString() << std::endl;
-			// std::cout << "2222" << std::endl;
-			// event = temp[0];
-			// assert(event.toStdString() != "");
-			// to = temp[1];
-			// assert(to.toStdString() != "");
-			// TransitionItem transitionItem(from, event, to);
-		 //    std::cout << "T: " + transitionItem.toString().toStdString() << std::endl;
-			// transitions.insert(transitionItem);
-			// states.insert(to);
+			
 		}
-		// for(int i = 1; i < modelSize; i++) {
-		// 	if(i == 1)
-		// 		from = startState;
-		// 	else
-		// 		from = to;
-		// 	QStringList temp = oModel[i].split(" ");
-		// 	states.insert(from);
-		// 	// std::cout << "1111" << std::endl;
-		// 	// for(int j = 0; j < temp.size(); j++)
-		// 	// 	std::cout << temp[j].toStdString() << std::endl;
-		// 	// std::cout << "2222" << std::endl;
-		// 	assert(from.toStdString() != "");
-		// 	event = temp[0];
-		// 	assert(event.toStdString() != "");
-		// 	to = temp[1];
-		// 	assert(to.toStdString() != "");
-		// 	TransitionItem transitionItem(from, event, to);
-		//     std::cout << "T: " + transitionItem.toString().toStdString() << std::endl;
-		// 	transitions.insert(transitionItem);
-		// 	states.insert(to);
-		// }
+		
 
 		this->numOfState = states.size();
 
-		// foreach(const TransitionItem& transitionItem, transitions) {
-		//   //  std::cout << "T: " + transitionItem.toString().toStdString();
-		// }
+		
 
 		this->endState = to;
 
@@ -166,7 +133,6 @@ namespace artemis
 			QString state = item.getFrom();
 			if(adjoinSet.contains(state)) {
 				adjoinSet[state]->insert(item);
-				//std::cout << "1111 " << adjoinSet.size() << std::endl;
 			} else {
 				adjoinSet.insert(state, new QSet<TransitionItem>());
 				adjoinSet[state]->insert(item);
@@ -177,6 +143,7 @@ namespace artemis
 
 		QMutableMapIterator<QString, QSet<TransitionItem>* > i(adjoinSet);
 
+		
 		QList<QString> keySet = adjoinSet.keys();
 
 		for(int i = 0; i < keySet.size(); i++) {
@@ -214,12 +181,8 @@ namespace artemis
 		double random = ((double) rand() / (RAND_MAX));
 		for(int i = 0; i < weightList.size(); i++) {
 			if(i == 0 && (random < weightList[0])) {
-				// std::cout << "Choose: " + transitionItems[0]->toString().toStdString() << std::endl;
-				// std::cout << "choose: " << 0 << std::endl;
 				return transitionItems[0];
 			} else if(i != 0 && random >= weightList[i - 1] && random < weightList[i]) {
-				// std::cout << "Choose: " + transitionItems[i]->toString().toStdString() << std::endl;
-				// std::cout << "choose: " << i << std::endl;
 				return transitionItems[i];
 			}
 		}

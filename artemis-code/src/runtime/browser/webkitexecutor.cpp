@@ -129,7 +129,6 @@ WebKitExecutor::~WebKitExecutor()
 }
 
 void WebKitExecutor::detach() {
-    // ignore events emitted from webkit on deallocation
     webkitListener->disconnect(mResultBuilder.data());
 
 }
@@ -182,7 +181,7 @@ void WebKitExecutor::slLoadFinished(bool ok)
             std::cout << "!!!!!!!!!!!!!!!!!!!!No dependent relations" << std::endl; 
 
             std::cout << "Reading dependency from file" << std::endl;
-            QString depFilePath = QString("/home/pengfei/guided-artemis/raw-data/") + subjectName + QString("/info/dep.txt");
+            QString depFilePath = QString("../../raw-data/") + subjectName + QString("/info/dep.txt");
             QString readRestul = readFile(depFilePath);
             QStringList templist = readRestul.split("\n");
             for(int i = 0; i < templist.size(); i += 4) {
@@ -210,12 +209,12 @@ void WebKitExecutor::slLoadFinished(bool ok)
         }
 
         
+
         std::cout << "generating model..." << std::endl;
 
        
 
-        
-
+     
         if(isAbstract) {
             QSet<QSharedPointer<const FormField> > formfields = mResultBuilder->getResult()->getFormFields();
 
@@ -249,17 +248,17 @@ void WebKitExecutor::slLoadFinished(bool ok)
             } else {
                 numsOfEventExecution[inputName] = 1;
             }
-            
+           
+
             mResultBuilder->notifyStartingEvent();
             mCoverageListener->notifyStartingEvent(input);
             mJavascriptStatistics->notifyStartingEvent(input);
             input->apply(this->mPage, this->webkitListener);
 
 
-            
+         
 
 
-            // std::cout << "isAbstract: " << isAbstract << std::endl;
             if(isAbstract) {
                 QSet<QSharedPointer<const FormField> > formfields = mResultBuilder->getResult()->getFormFields();
 
@@ -267,6 +266,8 @@ void WebKitExecutor::slLoadFinished(bool ok)
                     const DOMElementDescriptor* elmDesc = formField->getDomElement();
                     QWebElement element = elmDesc->getElement(this->mPage);
                     if (!element.isNull()) {
+                        // element.setAttribute("value", input.second->stringRepresentation());
+                        // std::cout << "value: " << element.attribute("value").toStdString() << std::endl;
                         element.setAttribute("value", "gpf");
                     }
                 }
@@ -275,6 +276,7 @@ void WebKitExecutor::slLoadFinished(bool ok)
 
             
             
+
             originalModel << (input->toString() + QString(" ") + QString::number(mResultBuilder->getResult()->getPageStateHash()));
             i++;
             foreach (EventHandlerDescriptor* ee, mResultBuilder->getResult()->getEventHandlers()) {
@@ -282,14 +284,14 @@ void WebKitExecutor::slLoadFinished(bool ok)
             }
         }
 
-
+       
         QMapIterator<QString, int> iter1(numsOfEventExecution);
         while(iter1.hasNext()) {
             iter1.next();
             std::cout << iter1.key().toStdString() <<": " << iter1.value() << std::endl;
         }
 
-        
+
     } 
     else {
         totalExe += 1;

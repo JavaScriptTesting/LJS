@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = artemis
+TARGET = LJS
 
 DEPENDPATH += .
 INCLUDEPATH += \

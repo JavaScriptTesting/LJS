@@ -35,7 +35,7 @@ namespace artemis {
         QSet<QString> calSleep(State& s, QString event);
         static void readDependencyFromFile() {
             std::cout << "Reading dependency from file" << std::endl;
-            QString depFilePath = QString("/home/pf/guided-artemis/raw-data/") + subjectName + QString("/info/dep.txt");
+            QString depFilePath = QString("/home/pengfei/guided-artemis/raw-data/") + subjectName + QString("/info/dep.txt");
             QString readRestul = readFile(depFilePath);
             QStringList templist = readRestul.split("\n");
             for(int i = 0; i < templist.size(); i += 4) {

@@ -48,7 +48,6 @@ namespace artemis
 	}
 
 	QString TransitionItem::toString() const{
-		// return this->from + " " + this->event + " " + this->to + " " + this->probability + "\n";
 		return this->from + " " + this->event + " " + this->to;
 	}	
 }

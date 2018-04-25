@@ -42,7 +42,6 @@
 #include "runtime.h"
 
 #include <sys/time.h>
-//#include "common.h"
 extern int testType;
 extern int iterationCnt;
 extern struct timeval start;
@@ -212,7 +211,6 @@ void Runtime::preConcreteExecution()
         }
     }
 
-    //termination condition
     int lines = mAppmodel->getCoverageListener()->getNumCoveredLines();
 
     
@@ -245,8 +243,6 @@ void Runtime::preConcreteExecution()
         cout << "model construction cost: " << mt << endl;
 
         
-
-       
         modelGeneration = false;
 
 
@@ -260,7 +256,6 @@ void Runtime::preConcreteExecution()
 
         this->testsuitsManager = new TestsuitsManager(this->model);
 
-        
         testsuitsManager->generateTestsuit(testType);
         testsuit = testsuitsManager->getTestsuit();
 
@@ -268,7 +263,6 @@ void Runtime::preConcreteExecution()
         cout << "model transitions num: " << model->getTransitions().size() << endl;
         cout << "model states num: " << model->getNumOfState() << endl;
         cout << "handlers size: " << handlersSet.size() << endl;
-        
         cout << "testsuit size: " << this->testsuit->size() << endl;
 
         cout << "model construction covered: " << mAppmodel->getCoverageListener()->getNumCoveredLines() << endl;
@@ -276,7 +270,6 @@ void Runtime::preConcreteExecution()
     } else if(modelGeneration == false && originalModel.size() < modelIteration){
 
         std::cout << "YYYYYYY" << std::endl;
-        
         Model::loadModel();
 
         std::cout << originalModel.size() << std::endl;
@@ -314,9 +307,7 @@ void Runtime::preConcreteExecution()
     }
     cout << "=======Execution======" <<endl;
     cout << nextConfiguration->toString().toStdString();
-    
-    mWebkitExecutor->executeSequence(nextConfiguration, mInputgenerator, testcase); 
-    
+    mWebkitExecutor->executeSequence(nextConfiguration, mInputgenerator, testcase); // calls the slExecutedSequence method as callback
 }
 
 /**
@@ -334,7 +325,7 @@ void Runtime::postConcreteExecution(ExecutableConfigurationConstPtr configuratio
     
     long hash;
 
-   
+    
     hash = result->getPageStateHash();
     qDebug() << "getPageStateHash" << hash;
     QList<EventHandlerDescriptor*> handlers = result->getEventHandlers();
@@ -356,7 +347,7 @@ void Runtime::postConcreteExecution(ExecutableConfigurationConstPtr configuratio
         QDateTime currentTime = QDateTime::currentDateTime();
         int t = startTime.secsTo(currentTime);
         std::cout << "Stop time: " << t << "\n";
-       
+        
 
         startTime = currentTime;
 

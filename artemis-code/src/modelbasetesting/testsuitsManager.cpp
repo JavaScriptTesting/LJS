@@ -21,7 +21,6 @@ namespace artemis {
                 TransitionItem* item; 
                 QStringList sequence;
                 QString endState = model->getEndState();
-                // while(sequence.size() < MAX_TEST_SEQUENCE_LENGTH && currentState != endState) {
                 while(sequence.size() < MAX_TEST_SEQUENCE_LENGTH && (currentState != endState || model->hasNextEvent(currentState))) {
                     item = model->getNextEventByRandom(currentState);
                     if(!item)
@@ -31,15 +30,9 @@ namespace artemis {
                         std::cout << "Boom!!!!!!!!!!!!!!!!!!!!!!!!!!";
                     sequence.append(item->getEvent());
                     currentState = item->getTo();
-                    // if(currentState == endState) {
-                    //     std::cout << "endState " << sequence.size() << std::endl;
-                    //     break;
-                    // }
-                    // std::cout << currentState.toStdString() << std::endl;
-                    // std::cout << sequence.size() << std::endl;
+                    
                 }
-                // std::cout << "end" << std::endl;
-                // std::cout << sequence.size() << std::endl;
+             
                 testsuit.append(sequence);
             }
             std::cout << "generating new testsuit and testsuit size: " << testsuit.size() << std::endl;
@@ -86,7 +79,6 @@ namespace artemis {
                     }
 
                 }
-                // queue.append(queue2);
                 queue = queue2;
 
 
@@ -136,6 +128,8 @@ namespace artemis {
 
 
 
+
+
         } else if(type == 2) {
             std::cout << "Using dependency relations: " << std::endl;
             int count = 0;
@@ -147,18 +141,11 @@ namespace artemis {
                     TransitionItem* item; 
                     QStringList sequence;
                     QString endState = model->getEndState();
-                    // while(sequence.size() < MAX_TEST_SEQUENCE_LENGTH && currentState != endState) {
-                    // while(sequence.size() < MAX_TEST_SEQUENCE_LENGTH) {
                     while(sequence.size() < MAX_TEST_SEQUENCE_LENGTH && (currentState != endState || model->hasNextEvent(currentState))) {
                         item = model->getNextEventByRandom(currentState);
                         sequence.append(item->getEvent());
                         currentState = item->getTo();
-                        // if(currentState == endState) {
-                        //     std::cout << "endState " << sequence.size() << std::endl;
-                        //     break;
-                        // }
-                        // std::cout << currentState.toStdString() << std::endl;
-                        // std::cout << sequence.size() << std::endl;
+                       
                     }
                     testsuit.append(sequence);
                 } else {
@@ -200,7 +187,6 @@ namespace artemis {
 
             }
             std::cout << "generated a new testsuit which has " << testsuit.size() << " testcases in total, and " << redundantTestcase << " redundant testcases" << std::endl;
-           
                
         } 
         else if(type == 3) {
@@ -248,11 +234,9 @@ namespace artemis {
             s->setDone(done);
             QSet<QString> sleep;
             s->setSleep(sleep);
-            // if(model->getEnabled(s->getStringState()).size() == NULL)
-            //     std::cout << "3" << std::endl;
+            
 
             QSet<QString> temp = model->getEnabled(s->getStringState()) - s->getDone() - s->getSleep();
-            // std::cout << "temp size: " << temp.size() << std::endl;
 
             QSetIterator<QString> i(temp);
             while(i.hasNext()) {
@@ -264,57 +248,40 @@ namespace artemis {
                 State* state = new State(nextState);
                 state->setSleep(calSleep(*s, event));
 
-                // std::cout << "sleep: " << std::endl;
-                // foreach(const QString& event, state->getSleep())
-                //     std::cout << event.toStdString() << std::endl;
-
-                // std::cout << std::endl;
-
+               
 
                 S->append(state);
                 explore(S);
-                // std::cout << "after S: " << S->size() << std::endl;
 
                 temp = model->getEnabled(s->getStringState()) - s->getDone() - s->getSleep();
-                // std::cout << "after explore: " << temp.size() << std::endl;
                 QSetIterator<QString> i(temp);
                 s->addSleep(event);
-                // std::cout << "sleep size: " << s->getSleep().size() << std::endl;
             }
         }
         if(s->getSelEV() == NULL) {
-        // if(!redundantSequence(S, s)) {
             QString sequence;
             QStringList sequenceList;
             for(int j = 0; j < S->size(); j++) {
                 sequenceList.append(S->at(j)->getSelEV());
                 sequence += S->at(j)->getSelEV() + ",";
             }
-            // std::cout << sequence.toStdString() << std::endl;
-            // std::cout << sequenceList.size() << std::endl;
+            
 
             testsuit.append(sequenceList);
-            // std::cout << "testsuit: " << testsuit.size() << std::endl;
 
         }
         S->removeLast();
-        // foreach(State* s, *S) {
-        //      std::cout << s->getStringState().toStdString() << " ";
-        //  }
-        //  std::cout << std::endl;
+      
 
 
     }
 
     QSet<QString> TestsuitsManager::calSleep(State& s, QString event) {
 
-        // std::cout << "call calSleep: " << s.getStringState().toStdString() << " " << event.toStdString() << std::endl;
         QSet<QString> sleep;
         foreach(const QString& e, s.getSleep()) {
-            // std::cout << "sleep content: " << e.toStdString() << std::endl;
             if(!isDc(e, event)) { 
                 sleep.insert(e);
-                // std::cout << "sleep in calSleep: " << e.toStdString() << std::endl;
             }
         }
 

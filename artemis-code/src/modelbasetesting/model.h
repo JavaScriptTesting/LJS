@@ -64,7 +64,6 @@ private:
 
     QStringList oModel;
 
-    
     QSet<TransitionItem> transitions;
 
     QMap<QString, QSet<TransitionItem>* > adjoinSet;
